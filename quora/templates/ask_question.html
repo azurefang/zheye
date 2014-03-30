@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block main %}
+<form action="" method="post">
+    {% csrf_token %}
+    <div>
+    <h2>new question</h2>
+    <input type="text" name="title" placeholder="title">
+    </div>
+    <div>
+    <textarea name="content" placeholder="question"></textarea>
+    </div>
+    <div>
+        <h3>tag</h3>
+        <input id="choose" type="text" name="topics" placeholder="like php">
+    </div>
+    <input type="submit" value="ask">
+</form>
+<script type="text/javascript">
+
+    $.ajaxSetup({
+  data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+});
+
+    var tagApi = jQuery("#choose").tagsManager({
+        prefilled: ["php", "python"]
+    });
+
+    jQuery("#choose").typeahead({
+        name: 'topics',
+        limit: 15,
+        prefetch: '/ajax/topic'
+    }).on('typeahead:selected', function (e, d) {
+
+        tagApi.tagsManager("pushTag", d.value);
+
+    });
+</script>
+{% endblock %}

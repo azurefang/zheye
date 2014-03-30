@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ STATIC_URL }}bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}bootstrap/css/bootstrap.theme.min.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}tagmanager/tagmanager.css">
+<script type="text/javascript" src="{{ STATIC_URL }}jquery/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}tagmanager/tagmanager.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}js/typeahead.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}tiny_mce/tinymce.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+<div>
+    <div class="logo">
+        <div class="search">
+            <form action="/search" method="get">
+                <input type="text" placeholder="search topics people"/>
+                <button type="submit">search</button>
+            </form>
+        </div>
+    </div>
+    <div>
+        {% if user.is_authenticated %}
+        <p>{{ user.first_name }}{{ user.last_name }}</p>
+            <img src="{{ user.account.aHeadImage.url }}" alt=""/>
+        {% else %}
+        <p>please login</p>
+        {% endif %}
+    </div>
+    <div>
+        {% block main %}
+        {% endblock %}
+    </div>
+    <div>
+        {% block sidebar %}
+        {% endblock %}
+    </div>
+</div>
+</body>
+</html>

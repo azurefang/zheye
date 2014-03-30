@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block main %}
+{% for topic in question.qTopic.all %}
+<a href="/topic/{{topic.id}}">{{ topic.tName }}</a>
+{% endfor %}
+<h3>{{ question.qTitle }}</h3>
+<div>{{ question.qContent }}</div>
+{% for answer in question.answers.all %}
+    <div>
+<b>{{ answer.aOwner.aUser.first_name }}{{ answer.aOwner.aUser.last_name}}</b>
+        <img src="{{ answer.aOwner.aHeadImage.url }}" alt=""/>
+{{ answer.aContent|safe }}
+{{ answer.aTime }}
+{{ answer.comments.all|length }}comments
+    <span>Thank</span>
+    <span>Collect</span>
+    </div>
+{% endfor %}
+{% ifequal 0 asked %}
+<div>
+<form method="post" action="">
+{% csrf_token %}
+<textarea name="answer"></textarea>
+<button type="submit">submit</button>
+</form>
+</div>
+
+<script language="javascript" type="text/javascript">
+
+    $.ajaxSetup({
+  data: {csrfmiddlewaretoken: '{{ csrf_token }}' },
+});
+   tinyMCE.init({
+       mode : "textareas",
+       theme : "modern",
+       width: 700,
+       language : "zh_CN"
+   });
+</script>
+{% endifequal %}
+
+{% endblock %}
+
+{% block sidebar %}
+<div>
+    <div>
+        <div></div>
+    </div>
+</div>
+{% endblock %}
