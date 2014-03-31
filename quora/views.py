@@ -15,6 +15,9 @@ from .forms import *
 from django.shortcuts import render, redirect
 from django.core.context_processors import csrf
 
+def index(request):
+    #if request.user
+    pass
 
 def register(request):
     if request.method == 'POST':
@@ -45,7 +48,11 @@ def register(request):
                     p = AccountModel(
                         aUser=new_user, aDomain=aDomain + '-' + str(int(match2.group(1)) + 1))
             p.save()
-        return redirect("/register")
+            username = cd['username']
+            password = cd['password1']
+            user = authenticate(username=username, password=password)
+            login(request, user)
+            return redirect("/ask_question")
     else:
         form = UserCreationForm()
         ctx = {'form': form}
@@ -67,7 +74,7 @@ def user_login(request):
         form = LoginForm()
         ctx = {'form': form}
         ctx.update(csrf(request))
-        return render(request, "register.html", ctx)
+        return render(request, "login.html", ctx)
 
 
 def display_topic(request, tId):
@@ -109,11 +116,13 @@ def display_question(request, qId):
 
 
 def followed_topics(request):
-    pass
+    account = request.user.account
+    return render(request, "followed_topics.html", {'account': account})
 
 
 def show_topics(request):
     pass
+
 
 
 def ask_question(request):
@@ -128,6 +137,10 @@ def ask_question(request):
         new_question.qId += new_question.id + 19550224
         topics = form.get('hidden-topics').split(',')
         for i in topics:
+            try:
+                TopicModel.objects.get(tName=i)
+            except TopicModel.DoesNotExist:
+                TopicModel(tName=i).save()
             new_question.qTopic.add(TopicModel.objects.get(tName=i))
         new_question.qFollower.add(request.user.account)
         new_question.save()

@@ -82,3 +82,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT= '/static/'
+MEDIA_ROOT = './media/'
+MEDIA_URL = '/static_media/'
+
+AUTH_PROFILE_MODULE = 'quora.AccountModel'

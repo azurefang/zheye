@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block main %}
+    <div>
+    {% for topic in account.followed_topic.all %}
+        <div>
+        <img src="{{ topic.tHeadImage.url }}" alt=""/>
+       <span>{{ topic.tName }}</span>
+        {% for question in topic.related_questions.all %}
+            <div>
+                <a href="/question/{{ question.qId }}">{{ question.qTitle }}</a>
+           </div>
+            {% break %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}
