@@ -2,7 +2,7 @@
 {% block main %}
     <img src="{{ topic.tHeadImage.url }}" alt=""/>
     <p>{{ topic.tName }}</p>
-    {% for i in topic.related_questions.all %}
+    {% for i in topic.related_questions.all() %}
         <p><a href="/display_question/{{ i.qId}}">{{ i.qTitle}}</a></p>
         <div>
         {{ i.qContent }}
@@ -13,7 +13,7 @@
 
 {% block sidebar %}
 <button>Follower</button>
-{{ topic.tFollower|length }} Followed this topic
+{{ topic.tFollower.length}} Followed this topic
     <div>
 description
 {% endblock %}

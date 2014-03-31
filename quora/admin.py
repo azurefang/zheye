@@ -14,10 +14,26 @@ class CustomUserAdmin(UserAdmin):
     inlines = (ProfileInline,)
 
 
+class TopicModelAdmin(admin.ModelAdmin):
+    list_display = ('tName',)
+    list_select_related = ('tName',)
+
+
+class QuestionModelAdmin(admin.ModelAdmin):
+    list_display = ('qTitle', 'qTime', 'qOwner', )
+
+
+class CommentModelAdmin(admin.ModelAdmin):
+    list_display = ('cOwner',)
+
+
+class AnswerModelAdmin(admin.ModelAdmin):
+    list_display = ('aOwner', )
+
 admin.site.unregister(User)
 admin.site.register(User, CustomUserAdmin)
-admin.site.register(QuestionModel)
-admin.site.register(TopicModel)
-admin.site.register(CommentModel)
-admin.site.register(AnswerModel)
+admin.site.register(QuestionModel, QuestionModelAdmin)
+admin.site.register(TopicModel, TopicModelAdmin)
+admin.site.register(CommentModel, CommentModelAdmin)
+admin.site.register(AnswerModel, AnswerModelAdmin)
 

@@ -144,7 +144,7 @@ def ask_question(request):
             new_question.qTopic.add(TopicModel.objects.get(tName=i))
         new_question.qFollower.add(request.user.account)
         new_question.save()
-        return redirect('/display_question/{}'.format(new_question.qId))
+        return redirect('/question/{}'.format(new_question.qId))
     else:
         c = {}
         c.update(csrf(request))

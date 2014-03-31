@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'quora',
+    'django_jinja',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -87,3 +88,12 @@ MEDIA_ROOT = './media/'
 MEDIA_URL = '/static_media/'
 
 AUTH_PROFILE_MODULE = 'quora.AccountModel'
+
+TEMPLATE_LOADERS = (
+    'django_jinja.loaders.AppLoader',
+    'django_jinja.loaders.FileSystemLoader',
+)
+
+DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.html'
+
+DEFAULT_JINJA2_TEMPLATE_INTERCEPT_RE = r"^(?!admin/).*"

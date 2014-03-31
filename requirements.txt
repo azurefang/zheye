@@ -1,1 +1,1 @@
-pymysql simplejson pinyin
+pymysql simplejson pinyin django-jinja
