@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
+{% extends 'base.html' %}
+{% block main %}
 <form action="" method="post">
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
     {{ form.as_p()|safe }}
     <input type="submit" value="Register"/>
 </form>
-
-</body>
-</html>
+{% endblock %}

@@ -19,7 +19,6 @@ urlpatterns = patterns('',
     url(r'^question/(?P<qId>\w+)', display_question),
     url(r'^topic$', followed_topics),
     url(r'^topics$', show_topics),
-
- (r'^static_media/(?P<path>.*)','django.views.static.serve',{'document_root':'./media/'}),
+    url(r'^static_media/(?P<path>.*)','django.views.static.serve',{'document_root':'./media/'}),
     url(r'^ajax/topic', ajax_topic_json)
 )

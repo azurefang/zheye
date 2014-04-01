@@ -7,7 +7,7 @@ class AccountModel(models.Model):
     aUser = models.OneToOneField(
         User, primary_key=True, related_name='account')
     aDomain = models.CharField(max_length=30)
-    aIntroduction = models.CharField(max_length=30)
+    aIntroduction = models.CharField(max_length=30, blank=True)
     aHeadImage = models.ImageField(
         upload_to='img/head/', default='img/head/666b0abfc_l.jpg')
 

@@ -54,6 +54,8 @@ def register(request):
             login(request, user)
             return redirect("/ask_question")
     else:
+        if request.user:
+            return redirect("/")
         form = UserCreationForm()
         ctx = {'form': form}
         ctx.update(csrf(request))
@@ -71,6 +73,8 @@ def user_login(request):
         else:
             return redirect("/admin")
     else:
+        if request.user:
+            return redirect("/")
         form = LoginForm()
         ctx = {'form': form}
         ctx.update(csrf(request))
@@ -82,14 +86,15 @@ def display_topic(request, tId):
     topic = TopicModel.objects.get(id=tId)
     if not topic:
         raise Http404
-    return render_to_response('display_topic.html', {'user': request.user, 'topic': topic})
+#    return render_to_response('display_topic.html', {'user': request.user, 'topic': topic})
+    return render(request, 'display_topic.html', {'topic': topic})
 
 
 def display_account(request, aDomain):
     account = AccountModel.objects.get(aDomain=aDomain)
     if not account:
         raise Http404
-    return render_to_response('display_account.html', {'account': account})
+    return render(request, "display_account.html", {'account': account})
 
 
 def display_question(request, qId):
@@ -108,9 +113,9 @@ def display_question(request, qId):
         aQuestion = QuestionModel.objects.get(qId=qId)
         new_answer = AnswerModel(aTime=aTime, aOwner=aOwner.account, aContent=aContent, aQuestion=aQuestion)
         new_answer.save()
-        return render_to_response('display_question.html', {'user': request.user, 'question': question, 'asked': asked})
+        return render(request, 'display_question.html', {'question': question, 'asked': asked})
     else:
-        ctx = {'user': request.user, 'question': question, 'asked': asked}
+        ctx = {'question': question, 'asked': asked}
         ctx.update(csrf(request))
         return render(request, "display_question.html", ctx)
 
@@ -147,5 +152,5 @@ def ask_question(request):
         return redirect('/question/{}'.format(new_question.qId))
     else:
         c = {}
-        c.update(csrf(request))
+#        c.update(csrf(request))
         return render(request, "ask_question.html", c)
