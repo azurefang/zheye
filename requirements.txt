@@ -1,1 +1,6 @@
-pymysql simplejson pinyin
+django
+pymysql
+pillow
+simplejson
+pinyin
+
