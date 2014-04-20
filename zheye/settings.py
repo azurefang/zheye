@@ -97,3 +97,16 @@ TEMPLATE_LOADERS = (
 DEFAULT_JINJA2_TEMPLATE_EXTENSION = '.html'
 
 DEFAULT_JINJA2_TEMPLATE_INTERCEPT_RE = r"^(?!admin/).*"
+
+
+CACHES = {
+        "default": {
+            "BACKEND": "redis_cache.cache.RedisCache",
+            "LOCATION": "127.0.0.1:6379:1",
+            "OPTIONS": {
+                "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+                "PICKLE_VERSION": -1,
+                "IGNORE_EXCEPTIONS": True,
+                }
+            }
+        }

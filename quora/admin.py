@@ -36,4 +36,5 @@ admin.site.register(QuestionModel, QuestionModelAdmin)
 admin.site.register(TopicModel, TopicModelAdmin)
 admin.site.register(CommentModel, CommentModelAdmin)
 admin.site.register(AnswerModel, AnswerModelAdmin)
+admin.site.register(EventModel)
 

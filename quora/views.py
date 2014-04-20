@@ -10,14 +10,18 @@ from django.shortcuts import render_to_response
 from .models import *
 
 import pinyin
+from redis_cache import get_redis_connection
+
 
 from .forms import *
 from django.shortcuts import render, redirect
 from django.core.context_processors import csrf
 
 def index(request):
-    #if request.user
-    pass
+    if request.user.is_authenticated():
+        event = EventModel.objects.filter(eUser__aFollower=request.user.account).order_by('-eTime')
+        return render(request, "index.html", {'event': event})
+    return redirect("/")
 
 def register(request):
     if request.method == 'POST':
@@ -52,9 +56,9 @@ def register(request):
             password = cd['password1']
             user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect("/ask_question")
+            return redirect("/")
     else:
-        if request.user:
+        if request.user.is_authenticated():
             return redirect("/")
         form = UserCreationForm()
         ctx = {'form': form}
@@ -73,7 +77,7 @@ def user_login(request):
         else:
             return redirect("/admin")
     else:
-        if request.user:
+        if request.user.is_authenticated():
             return redirect("/")
         form = LoginForm()
         ctx = {'form': form}
@@ -113,6 +117,8 @@ def display_question(request, qId):
         aQuestion = QuestionModel.objects.get(qId=qId)
         new_answer = AnswerModel(aTime=aTime, aOwner=aOwner.account, aContent=aContent, aQuestion=aQuestion)
         new_answer.save()
+        new_event = EventModel(eUser=aOwner.account, eType='3', eTime=datetime.now(), eQuestion=aQuestion, eAnswer=new_answer)
+        new_event.save()
         return render(request, 'display_question.html', {'question': question, 'asked': asked})
     else:
         ctx = {'question': question, 'asked': asked}
@@ -149,6 +155,8 @@ def ask_question(request):
             new_question.qTopic.add(TopicModel.objects.get(tName=i))
         new_question.qFollower.add(request.user.account)
         new_question.save()
+        new_event = EventModel(eUser=qOwner.account, eType = '0', eTime=datetime.now(), eQuestion=new_question)
+        new_event.save()
         return redirect('/question/{}'.format(new_question.qId))
     else:
         c = {}

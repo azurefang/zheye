@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+Type = (('0', 'ask_question'), ('1', 'follow_question'), ('2', 'follow_people'), ('3', 'answer_question'), \
+        ('4','agree_answer'))
 
 class AccountModel(models.Model):
 
@@ -10,6 +12,7 @@ class AccountModel(models.Model):
     aIntroduction = models.CharField(max_length=30, blank=True)
     aHeadImage = models.ImageField(
         upload_to='img/head/', default='img/head/666b0abfc_l.jpg')
+    aFollower = models.ManyToManyField('self', related_name='followed_people', null=True, blank=True)
 
     def __unicode__(self):
         return self.aUser.username
@@ -71,3 +74,12 @@ class CommentModel(models.Model):
                                     null=True)
     cCommentFather = models.ForeignKey(
         'self', blank=True, null=True, default=None, related_name='father')
+
+
+class EventModel(models.Model):
+    eUser = models.ForeignKey(AccountModel)
+    eTime = models.DateTimeField()
+    eType = models.CharField(max_length=2, choices=Type)
+    eQuestion = models.ForeignKey(QuestionModel, blank=True, null=True)
+    eAnswer = models.ForeignKey(AnswerModel, blank=True, null=True)
+
